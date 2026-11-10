@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" mode="ios" class="ios">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Event Hunt — The best events. Picked for you.</title>
+  <meta name="description" content="The best events. Picked for you. Instant alerts. Never miss out.">
+  <link rel="stylesheet" href="{{ asset_urls['main.css'] }}">
+  <script type="module" src="{{ asset_urls['main.js'] }}"></script>
+</head>
+<body class="public-body">
+<main class="public-entry" id="app" data-public-preview="true" data-denied-account="{{ 'true' if denied_account else 'false' }}">
+  <header class="public-header"><a href="{{ sign_in_url }}">Sign in</a></header>
+  <section class="public-hero" aria-labelledby="publicTitle">
+    <h1 id="publicTitle">Event Hunt</h1>
+    <p>The best events. Picked for you.<br>Instant alerts. Never miss out.</p>
+  </section>
+  <section class="public-preview" aria-labelledby="previewTitle">
+    <h2 id="previewTitle">Upcoming events</h2>
+    <div id="agenda" aria-label="Event preview" aria-busy="true"><p class="status" role="status">Loading events…</p></div>
+    <noscript><p>Enable JavaScript to preview events. You can still <a href="{{ sign_in_url }}">sign in</a> or contact info@sotazoo.com.</p></noscript>
+    {% if open_google_signup %}
+    {% if denied_account %}<p class="status" id="signInError" role="alert" tabindex="-1">This Google account cannot sign in right now. <a href="{{ sign_in_url }}">Use another Google account</a></p>{% endif %}
+    {% else %}
+    <section class="access-panel" id="earlyAccess" aria-labelledby="accessTitle">
+      <h2 id="accessTitle" tabindex="-1">Early Access</h2>
+      {% if denied_account %}<p>This account isn't invited yet.</p>{% endif %}
+      <form id="inviteForm" method="post" action="/api/invitation-requests">
+        <input id="requestEmail" name="email" type="email" autocomplete="email" inputmode="email" aria-label="Email address" placeholder="Email address" required maxlength="254" value="{{ request_email }}">
+        <button type="submit" class="request-button" disabled>Request an invite</button>
+      </form>
+      <p id="requestStatus" role="status" aria-live="polite"></p>
+      <p class="sign-in-note">Already invited? <a href="{{ sign_in_url }}">Sign in</a></p>
+      {% if denied_account %}<p><a href="{{ sign_in_url }}">Use another Google account</a></p>{% endif %}
+    </section>
+    {% endif %}
+  </section>
+  {% include "public_footer.html" %}
+</main>
+</body>
+</html>

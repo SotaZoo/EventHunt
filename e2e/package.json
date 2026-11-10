@@ -1,0 +1,13 @@
+{
+  "name": "nyc-ai-events-e2e",
+  "private": true,
+  "scripts": {
+    "test": "cucumber-js --config cucumber.config.js"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^11.1.1",
+    "@playwright/test": "^1.48.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,14 @@
+{% extends "account_base.html" %}
+{% block title %}Remove access — Event Hunt{% endblock %}
+{% block content %}
+  <section class="oauth-content">
+    <h1>Remove access for {{ grant.client_name or grant.client_id }}?</h1>
+    <p class="supporting">This client will need your permission to connect again.</p>
+    <form method="post" action="/settings/oauth-grants/{{ grant.client_id }}/revoke" style="margin-top:24px">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="confirmed" value="yes">
+      <button class="primary-button" type="submit">Remove access</button>
+    </form>
+    <a class="secondary-button" href="/settings/ai" style="display:grid;place-items:center;text-decoration:none">Cancel</a>
+  </section>
+{% endblock %}

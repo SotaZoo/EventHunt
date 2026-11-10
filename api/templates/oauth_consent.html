@@ -1,0 +1,20 @@
+{% extends "account_base.html" %}
+{% block title %}Authorize {{ authorization.client_name or authorization.client_id or "AI app" }} — Event Hunt{% endblock %}
+{% block content %}
+  <section class="oauth-content">
+    <p class="oauth-product">Event Hunt</p>
+    <h1>Authorize {{ authorization.client_name or authorization.client_id or "AI app" }}</h1>
+    <div class="signed-in">
+      <p class="supporting">Signed in as</p>
+      <p>{{ user.email }}</p>
+    </div>
+    <h2>This app can</h2>
+    <ul class="permission-group">{% for permission in permissions %}<li>{{ permission }}</li>{% endfor %}</ul>
+    <form method="post" action="/oauth/consent">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="authorization_id" value="{{ authorization.authorization_id }}">
+      <button class="primary-button" type="submit" name="decision" value="approve">Allow access</button>
+      <button class="secondary-button" type="submit" name="decision" value="deny">Cancel</button>
+    </form>
+  </section>
+{% endblock %}

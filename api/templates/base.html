@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Event Hunt{% endblock %}</title>
+    <style>
+      :root {
+        --bg: #fbfaf7;
+        --surface: #ffffff;
+        --surface-2: #f2f6f4;
+        --text: #1d1b17;
+        --muted: #6b665d;
+        --border: #d7d0c2;
+        --accent: #0b5c5a;
+        --accent-2: #315f9c;
+        --success: #0f7a3f;
+        --warning: #946100;
+        --danger: #b42318;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Avenir Next", "SF Pro Text", "Segoe UI", sans-serif;
+        font-size: 15px;
+        line-height: 1.45;
+        letter-spacing: 0;
+      }
+      a { color: var(--accent-2); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      button, input, select {
+        font: inherit;
+      }
+      button, .action-link {
+        min-height: 34px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--text);
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      .action-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 34px;
+        text-decoration: none;
+      }
+      button:hover, .action-link:hover { border-color: var(--accent); }
+      .action-open {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #ffffff;
+        font-weight: 700;
+        justify-content: center;
+      }
+      .app-header {
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .app-header-inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+      .brand {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .nav a {
+        color: var(--text);
+        font-weight: 600;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 6px 11px;
+      }
+      .nav a.active {
+        background: var(--text);
+        color: #ffffff;
+        border-color: var(--text);
+      }
+      .nav form { margin: 0; }
+      main {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 22px 18px 48px;
+      }
+      .page-title {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 30px;
+        line-height: 1.08;
+      }
+      h2 {
+        margin: 22px 0 10px;
+        font-size: 17px;
+      }
+      .muted { color: var(--muted); }
+      .filters {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        align-items: end;
+        padding: 12px;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      input, select {
+        width: 100%;
+        min-height: 34px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--surface);
+        color: var(--text);
+        padding: 6px 8px;
+      }
+      .rows {
+        display: grid;
+        gap: 0;
+      }
+      .event-row {
+        border-top: 1px solid var(--border);
+        background: transparent;
+        padding: 14px 0;
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr) 150px;
+        gap: 14px;
+      }
+      .datebox {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        min-height: 74px;
+        display: grid;
+        place-items: center;
+        background: var(--surface);
+        text-align: center;
+      }
+      .datebox strong {
+        display: block;
+        font-size: 26px;
+        line-height: 1;
+      }
+      .event-main {
+        min-width: 0;
+      }
+      .event-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: start;
+      }
+      .event-title {
+        margin: 0 0 4px;
+        font-size: 19px;
+        line-height: 1.18;
+      }
+      .badges {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: end;
+      }
+      .badge {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 3px 8px;
+        font-size: 12px;
+        background: var(--surface);
+        white-space: nowrap;
+      }
+      .badge.score { color: var(--success); border-color: #9bd3ad; }
+      .badge.status { color: var(--accent); border-color: #95c7bf; }
+      .event-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .reasoning {
+        margin: 8px 0 0;
+      }
+      .actions {
+        display: grid;
+        gap: 8px;
+        align-self: start;
+        justify-items: stretch;
+      }
+      .actions form {
+        margin: 0;
+      }
+      .primary-action-form {
+        margin: 0;
+      }
+      .primary-action-form button,
+      .actions .action-open {
+        width: 100%;
+      }
+      .status-menu {
+        position: relative;
+      }
+      .status-menu summary {
+        list-style: none;
+        min-height: 34px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: #fff4d8;
+        color: var(--text);
+        padding: 6px 10px;
+        cursor: pointer;
+        text-align: center;
+      }
+      .status-menu summary::-webkit-details-marker {
+        display: none;
+      }
+      .status-menu[open] .status-menu-panel {
+        display: grid;
+      }
+      .status-menu-panel {
+        display: none;
+        position: absolute;
+        right: 0;
+        z-index: 2;
+        min-width: 190px;
+        margin-top: 6px;
+        padding: 8px;
+        gap: 6px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+      }
+      .status-menu-panel button {
+        width: 100%;
+        text-align: left;
+        background: var(--surface);
+      }
+      .feedback-actions {
+        display: flex;
+        gap: 6px;
+      }
+      .feedback-actions button {
+        flex: 1;
+      }
+      .undo-banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border: 1px solid #d8be73;
+        background: #fff8df;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 14px;
+      }
+      .button-save { color: var(--accent); }
+      .button-danger { color: var(--danger); }
+      .button-warning { color: var(--warning); }
+      .empty {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        padding: 18px;
+        border-radius: 8px;
+        color: var(--muted);
+      }
+      .login-shell {
+        max-width: 420px;
+        margin: 72px auto;
+        padding: 22px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+      }
+      .login-shell form {
+        display: grid;
+        gap: 10px;
+      }
+      .google-login {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        margin: 16px 0 12px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        background: var(--surface);
+        font-weight: 700;
+      }
+      .google-login:hover {
+        border-color: var(--accent);
+        text-decoration: none;
+      }
+      .google-login.disabled {
+        color: var(--muted);
+        background: var(--surface-2);
+        cursor: default;
+      }
+      .fallback-login {
+        margin-top: 12px;
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+      }
+      .fallback-login summary {
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .login-divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      .login-divider::before,
+      .login-divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: var(--border);
+      }
+      .error {
+        color: var(--danger);
+        font-weight: 700;
+      }
+      .calendar-day {
+        border-top: 1px solid var(--border);
+        padding-top: 8px;
+      }
+      .timeline-day {
+        margin-top: 18px;
+      }
+      .timeline-day h2 {
+        color: var(--muted);
+        font-size: 13px;
+        text-transform: uppercase;
+      }
+      .settings-list {
+        display: grid;
+        gap: 8px;
+        max-width: 640px;
+      }
+      .settings-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      @media (max-width: 760px) {
+        .app-header-inner, .event-top, .page-title {
+          align-items: stretch;
+          flex-direction: column;
+        }
+        .event-row {
+          grid-template-columns: 1fr;
+        }
+        .datebox {
+          min-height: 56px;
+          display: block;
+          padding: 10px;
+          text-align: left;
+        }
+        .datebox strong {
+          display: inline;
+          font-size: 18px;
+          margin: 0 4px;
+        }
+        .filters {
+          grid-template-columns: 1fr;
+        }
+        .badges {
+          justify-content: start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% if show_app_header|default(false) %}
+      <header class="app-header">
+        <div class="app-header-inner">
+          <div class="brand">Event Hunt</div>
+          <nav class="nav">
+            <a class="{% if view_path == '/events' %}active{% endif %}" href="/events">Timeline</a>
+            {% if is_authenticated %}
+              <a class="{% if view_path == '/mine' %}active{% endif %}" href="/mine">Mine</a>
+              <a class="{% if view_path == '/hidden' %}active{% endif %}" href="/hidden">Hidden</a>
+              <a href="/settings">Settings</a>
+              <form method="post" action="/logout">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+                <button type="submit">Logout</button>
+              </form>
+            {% else %}
+              <a class="action-link" href="/login">Log in</a>
+            {% endif %}
+          </nav>
+        </div>
+      </header>
+    {% endif %}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

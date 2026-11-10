@@ -1,0 +1,84 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.uv/
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+dist/
+build/
+
+# Worktrees
+.worktrees/
+worktrees/
+
+# Frontend
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+web/dist/
+web/tsconfig.tsbuildinfo
+web/next-env.d.ts
+
+# E2E
+e2e/node_modules/
+e2e/test-results/
+e2e/playwright-report/
+
+# Project-specific
+data/*
+!data/.gitkeep
+!data/taste-seed.example.txt
+!data/taste-profile.example.md
+output/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+.env
+.env.*
+!.env.example
+.env.local
+.env.friends-alpha
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Local scratch and plan-review artifacts
+scratch/
+.plan-reviews/
+
+# Per user rules
+.PROJECT.md
+AGENTS.local.md
+CLAUDE.local.md
+.ai/local/
+*.local.md
+
+# Playwright
+test-results/
+playwright-report/
+
+# Eval artifacts derived from gitignored taste-seed
+tests/eval/seed.jsonl
+tests/eval/results-*.json
+
+# macOS / Playwright MCP scratch
+.DS_Store
+.playwright-mcp/
+.playwright-cli/
+
+# Channel-pivot runtime markers
+data/.webhook_disabled
+data/.scoring_disabled
+data/.cycle_health.json
+data/cycle.out.log
+data/cycle.err.log
+data/cleanup.out.log
+data/cleanup.err.log
+data/taste-profile.md
+.gstack/
+.tools/

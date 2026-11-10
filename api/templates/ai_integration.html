@@ -1,0 +1,49 @@
+{% extends "account_base.html" %}
+{% block title %}AI integration — Event Hunt{% endblock %}
+{% block navigation %}
+  <nav class="account-nav" aria-label="AI integration navigation">
+    <a class="account-back" href="/settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Account</a>
+    <h1>AI integration</h1><span aria-hidden="true"></span>
+  </nav>
+{% endblock %}
+{% block content %}
+  {% if error %}<p class="notice" role="alert">{{ error }}</p>{% endif %}
+  <section class="account-section" aria-labelledby="setup-heading">
+    <h2 id="setup-heading">MCP setup</h2>
+    {% if setup_prompt %}
+      <div class="prompt-heading">
+        <span id="copy-status" role="status" aria-live="polite">Paste into your AI agent</span>
+        <button class="icon-button copy-button" type="button" id="copy-prompt" aria-label="Copy setup prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button>
+      </div>
+      <p class="prompt-box" id="setup-prompt">{{ setup_prompt }}</p>
+    {% else %}<p class="supporting">AI integration is not available yet.</p>{% endif %}
+  </section>
+  <section class="account-section" aria-labelledby="clients-heading">
+    <h2 id="clients-heading">Authorized clients</h2>
+    {% if oauth_session_unavailable %}
+      <p class="supporting">Sign in again to manage access. <a href="/auth/supabase/start">Sign in</a>.</p>
+    {% elif oauth_grants_error %}
+      <p class="supporting" role="status">Access information is unavailable. <a href="/settings/ai">Try again</a>.</p>
+    {% elif not oauth_grants_enabled %}
+      <p class="supporting">AI integration is not available yet.</p>
+    {% elif oauth_grants %}
+      {% for grant in oauth_grants %}
+        <div class="client-row">
+          <span class="client-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="7" width="16" height="13" rx="4"/><path d="M12 3v4M8 12v2m8-2v2M9 17h6"/></svg></span>
+          <span class="client-name">{{ grant.client_name or grant.client_id }}</span>
+          <form method="post" action="/settings/oauth-grants/{{ grant.client_id }}/revoke" data-remove-client="{{ grant.client_name or grant.client_id }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="confirmed" value="">
+            <button class="text-button" type="submit">Remove access</button>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}<p class="supporting">No authorized clients.</p>{% endif %}
+  </section>
+  <dialog class="access-dialog" id="remove-dialog" aria-labelledby="remove-title" aria-describedby="remove-description">
+    <h2 id="remove-title">Remove access?</h2>
+    <p id="remove-description">This client will need your permission to connect again.</p>
+    <button class="primary-button" id="confirm-remove" type="button">Remove access</button>
+    <button class="secondary-button" id="cancel-remove" type="button" autofocus>Cancel</button>
+  </dialog>
+{% endblock %}

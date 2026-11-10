@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- deploy/com.yang.nyc-ai-events.capacity-poller.plist
+     Hourly capacity ticker (spec §4): re-scrapes Luma capacity for
+     every pushed-and-future event, PATCHes the Discord message at
+     50/25/10 spot crossings, and marks cancelled events.
+
+     Install:
+       1. Generate an install copy that replaces RUNTIME_PATH.
+       2. cp the generated copy to ~/Library/LaunchAgents/
+       3. launchctl load -w ~/Library/LaunchAgents/com.yang.nyc-ai-events.capacity-poller.plist
+     Inspect:
+       launchctl list | grep capacity-poller
+     Logs:
+       tail -f RUNTIME_PATH/data/logs/capacity-poller.out.log RUNTIME_PATH/data/logs/capacity-poller.err.log
+
+     Cadence: every hour at :15 from 06:00 to 23:00 local. Off-cycle
+     from the main cycle (which fires at :00 and :30) so we don't
+     contend on Luma rate-limits.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.yang.nyc-ai-events.capacity-poller</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-c</string>
+    <string>set -a &amp;&amp; source RUNTIME_PATH/.env.friends-alpha &amp;&amp; export PYTHONSAFEPATH=1 &amp;&amp; set +a &amp;&amp; cd RUNTIME_PATH &amp;&amp; RUNTIME_PATH/.venv/bin/nyc-ai-scout poll-capacity</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>LLM_SCORING_MODE</key>
+    <string>codex-cli</string>
+    <key>CODEX_CLI_PATH</key>
+    <string>/usr/local/bin/codex</string>
+    <key>CODEX_MODEL</key>
+    <string>gpt-5.6-luna</string>
+    <key>CODEX_REASONING_EFFORT</key>
+    <string>low</string>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+
+  <!-- Hourly at :15 from 06:00 to 23:00. Off-cycle from the main cycle
+       (which fires at :00 / :30) so we don't fight for the same Luma
+       rate-limit budget. No overnight runs (events past midnight are
+       handled by the next morning's first tick). -->
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Hour</key><integer>6</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>7</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>8</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>10</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>12</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>13</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>14</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>15</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>16</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>17</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>18</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>19</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>20</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>22</integer><key>Minute</key><integer>15</integer></dict>
+    <dict><key>Hour</key><integer>23</integer><key>Minute</key><integer>15</integer></dict>
+  </array>
+
+  <key>StandardOutPath</key>
+  <string>RUNTIME_PATH/data/logs/capacity-poller.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>RUNTIME_PATH/data/logs/capacity-poller.err.log</string>
+
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>

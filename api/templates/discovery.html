@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" mode="ios" class="ios">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Events - Event Hunt</title>
+  <link rel="stylesheet" href="{{ asset_urls['main.css'] }}">
+  <script type="module" src="{{ asset_urls['main.js'] }}"></script>
+</head>
+<body>
+<noscript><p class="status">Please enable JavaScript to browse events.</p></noscript>
+<main class="app" id="app" aria-label="Event Hunt event discovery" data-public-preview="false">
+      <header class="appbar">
+        <a class="icon-button" href="/settings" aria-label="Open profile"><span class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span></a>
+        <h1>EventHunt</h1>
+      </header>
+      <div class="events-toolbar">
+        <h2>Events</h2>
+        <button class="icon-button filter-button" id="openFilters" disabled aria-label="Open filters" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span>Filters</span></button>
+      </div>
+    <section class="calendar-shell" aria-label="Browse dates">
+      <div class="calendar-toolbar">
+        <label class="month-button"><span id="monthName" aria-hidden="true"></span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 7 6 6 6-6" stroke="currentColor" stroke-width="1.7"/></svg><select id="monthPicker" aria-label="Change month"></select></label>
+        <ion-button class="today" id="today" mode="ios">Today</ion-button>
+        <div class="month-navigation">
+          <button class="icon-button" id="previousMonth" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m14 7-5 5 5 5"/></svg></button>
+          <button class="icon-button" id="nextMonth" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m10 7 5 5-5 5"/></svg></button>
+        </div>
+      </div>
+      <div class="weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+      <div class="calendar-pages" id="calendarPages" aria-label="Calendar, swipe horizontally to browse"></div>
+      <button class="calendar-handle" id="calendarHandle" aria-label="Expand month calendar" aria-expanded="false" aria-controls="calendarPages"></button>
+    </section>
+    <section class="agenda-sheet" aria-label="Upcoming events"><div class="agenda" id="agenda" tabindex="0" aria-label="Event list" aria-busy="true"><p class="status" role="status">Loading events…</p></div></section>
+  </main>
+  <dialog id="filters" aria-labelledby="filtersTitle">
+    <div class="sheet-grip"></div>
+    <div class="sheet-header"><h2 id="filtersTitle">Filters</h2><button class="icon-button sheet-close" id="closeFilters" aria-label="Close filters without applying"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg></button></div>
+    <div class="filter-body">
+      <div class="filter-field"><h3 class="field-heading" id="formatLabel">Format</h3>
+        <ion-segment id="format" mode="ios" value="all" aria-labelledby="formatLabel">
+          <ion-segment-button value="all"><ion-label>All</ion-label></ion-segment-button>
+          <ion-segment-button value="in-person"><ion-label>In person</ion-label></ion-segment-button>
+          <ion-segment-button value="online"><ion-label>Online</ion-label></ion-segment-button>
+        </ion-segment>
+      </div>
+      <div class="filter-field"><h3 class="field-heading"><span>Minimum score</span><output id="scoreValue">Any score</output></h3>
+        <ion-range id="score" mode="ios" min="0" max="1" step="0.05" value="0" aria-label="Minimum score"></ion-range>
+        <div class="range-ticks" aria-hidden="true"><span>Any</span><span>0.5</span><span>1.0</span></div>
+      </div>
+      <div class="filter-field"><h3 class="field-heading"><span>Event start time</span><output id="timeValue">All day</output></h3>
+        <ion-range id="timeRange" mode="ios" min="0" max="24" step="0.5" dual-knobs="true" aria-label="Event start time"></ion-range>
+        <div class="range-ticks" aria-hidden="true"><span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>12am</span></div>
+      </div>
+    </div>
+    <div class="sheet-footer"><ion-button fill="clear" id="resetDraft" mode="ios">Reset</ion-button><ion-button class="apply" id="applyFilters" mode="ios">Show events</ion-button></div>
+  </dialog>
+
+</body>
+</html>

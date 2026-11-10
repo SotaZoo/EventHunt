@@ -1,0 +1,22 @@
+<article class="event-row">
+  <div class="datebox">
+    <span>{{ event.weekday_short }}</span>
+    <strong>{{ event.day_number }}</strong>
+    <span>{{ event.event_time_label }}</span>
+  </div>
+  <div class="event-main">
+    <h2 class="event-title"><a href="{{ event.safe_url }}" target="_blank" rel="noopener">{{ event.title }}</a></h2>
+    <div class="event-meta">
+      <span>{{ event.venue_label }}</span>
+      <span>{{ event.source }}</span>
+      {% if event.host %}<span>{{ event.host }}</span>{% endif %}
+    </div>
+    {% if event.fit_reasoning %}
+      <p class="reasoning">{{ event.fit_reasoning }}</p>
+    {% endif %}
+    <div class="badges">
+      <span class="badge score">{{ event.score_label }} score</span>
+    </div>
+  </div>
+  {% include "_event_actions.html" %}
+</article>

@@ -1,0 +1,23 @@
+[
+  {
+    "event_id": 1,
+    "fit_score": 0.82,
+    "reasoning": "AI infra meetup with strong infra-engineer signal; matches taste for hands-on systems content.",
+    "urgency": "high",
+    "urgency_reason": "8 seats left"
+  },
+  {
+    "event_id": 2,
+    "fit_score": 0.55,
+    "reasoning": "Generalist startup mixer; possible value but no clear AI angle.",
+    "urgency": "medium",
+    "urgency_reason": null
+  },
+  {
+    "event_id": 3,
+    "fit_score": 0.21,
+    "reasoning": "Crypto pitch night; not aligned with AI/infra taste profile.",
+    "urgency": "low",
+    "urgency_reason": null
+  }
+]

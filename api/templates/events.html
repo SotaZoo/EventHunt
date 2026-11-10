@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Events - Event Hunt{% endblock %}
+{% block content %}
+  <div class="page-title">
+    <div>
+      <h1>{{ today_header }}</h1>
+      <div class="muted">{{ page_intro }}</div>
+    </div>
+    <div class="muted">
+      {% if is_authenticated %}
+        {{ user.display_name }} · {{ page_title }}
+      {% else %}
+        Browse · {{ page_title }}
+      {% endif %}
+    </div>
+  </div>
+  {% if undo %}
+    <div class="undo-banner">
+      <span>Event moved out of the main timeline.</span>
+      <form method="post" action="/events/{{ undo.event_id }}/status">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="return_to" value="{{ view_path }}">
+        <input type="hidden" name="status" value="{{ undo.status }}">
+        <button type="submit">Undo</button>
+      </form>
+    </div>
+  {% endif %}
+  {% include "_filters.html" %}
+  {% if day_groups %}
+    <section class="rows">
+      {% for group in day_groups %}
+        <section class="timeline-day">
+          <h2>{{ group.day }}</h2>
+          <div class="rows">
+            {% for event in group.events %}
+              {% include "_event_row.html" %}
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+    </section>
+  {% else %}
+    <div class="empty">{{ empty_state }}</div>
+  {% endif %}
+{% endblock %}

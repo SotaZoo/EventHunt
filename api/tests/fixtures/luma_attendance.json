@@ -1,0 +1,16 @@
+{
+  "source_url": "https://luma.com/huuwc6cm",
+  "captured_on": "2026-09-30",
+  "note": "Public JSON-LD projection; only fields needed for the attendance regression are retained.",
+  "event": {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "CAST-GNY Startup Pitch Competition 2026",
+    "startDate": "2026-10-04T09:30:00.000-04:00",
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "location": {
+      "@type": "Place",
+      "name": "Fordham University School of Law"
+    }
+  }
+}

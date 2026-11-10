@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Calendar - Event Hunt{% endblock %}
+{% block content %}
+  <div class="page-title">
+    <div>
+      <h1>Calendar</h1>
+      <div class="muted">{{ user.display_name }}</div>
+    </div>
+  </div>
+  {% include "_filters.html" %}
+  {% if day_groups %}
+    <section class="rows">
+      {% for group in day_groups %}
+        <section class="calendar-day">
+          <h2>{{ group.day }}</h2>
+          <div class="rows">
+            {% for event in group.events %}
+              {% include "_event_row.html" %}
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+    </section>
+  {% else %}
+    <div class="empty">{{ empty_state }}</div>
+  {% endif %}
+{% endblock %}

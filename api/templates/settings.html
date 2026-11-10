@@ -1,0 +1,32 @@
+{% extends "account_base.html" %}
+{% block title %}Account — Event Hunt{% endblock %}
+{% block navigation %}
+  <nav class="account-nav" aria-label="Account navigation">
+    <a class="account-back" href="/events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Events</a>
+    <h1>Account</h1><span aria-hidden="true"></span>
+  </nav>
+{% endblock %}
+{% block content %}
+  <section class="account-identity" aria-label="Signed-in account">
+    <div class="account-avatar" aria-hidden="true">{{ account_initials }}</div>
+    <div><p class="account-name">{{ user.display_name or user.email }}</p><p class="account-email">{{ user.email }}</p></div>
+  </section>
+  <div class="account-group">
+    <a class="account-row" href="/settings/ai">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="7" width="16" height="13" rx="4"/><path d="M12 3v4M8 12v2m8-2v2M9 17h6"/></svg>
+      <span class="row-label">AI integration</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </div>
+  <div class="account-group account-support">
+    {% if feedback_url %}<a class="account-row" href="{{ feedback_url }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 15a3 3 0 0 1-3 3H9l-5 3V7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3Z"/></svg><span class="row-label">Feedback</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>{% endif %}
+    <a class="account-row" href="/about">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 10v7m0-11v1"/></svg><span class="row-label">About</span><svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+    </a>
+  </div>
+  <form class="account-signout" method="post" action="/logout">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+    <button type="submit">Sign out</button>
+  </form>
+{% endblock %}

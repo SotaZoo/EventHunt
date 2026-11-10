@@ -1,0 +1,55 @@
+# Event Hunt — taste-seed format
+#
+# One event per record, separated by a line containing only "---".
+# Field order is fixed; unknown fields go in `notes`.
+#
+# Required fields:
+#   url     — canonical event URL (luma.com/event/evt-XXXXX, eventbrite.com/e/...,
+#             partiful.com/e/..., etc.)
+#   title   — event title as scraped/seen
+#   date    — YYYY-MM-DD of the event start (local time)
+#   rating  — one of: +1 | 0 | -1 | ?
+#                +1 = went and got value (or would go again)
+#                 0 = went, was meh
+#                -1 = would skip if I saw it again
+#                 ? = need to manually rate (auto-labeler couldn't decide)
+#   source  — where this row came from. one of:
+#                calendar+luma   (in both — strongest positive signal)
+#                calendar+journal (cal RSVP plus journal mention)
+#                calendar-only   (RSVP'd or added but no Luma/journal evidence)
+#                luma-only       (Luma RSVP'd, never added to cal — ambiguous)
+#                journal-only    (mentioned in journal, neither cal nor Luma)
+#                manual          (entered by hand)
+#
+# Optional fields:
+#   host    — org / community running the event
+#   notes   — free text. journal snippets, urgency cues, anything useful
+#
+# The eval harness (M0.9) parses this file and emits tests/eval/seed.jsonl.
+# Records with rating=? are excluded from precision@5 computation but kept
+# so re-runs of the labeler don't lose the candidate.
+
+# The entries below are synthetic examples.
+
+url: https://example.test/builders-workshop
+title: Builders workshop
+date: 2026-11-10
+rating: +1
+source: manual
+host: Example Workshop
+notes: Practical exercises and a published agenda.
+---
+url: https://example.test/product-overview
+title: Product overview
+date: 2026-11-12
+rating: -1
+source: manual
+host: Example Organizer
+notes: Promotional session with little technical detail.
+---
+url: https://example.test/online-discussion
+title: Online discussion
+date: 2026-11-15
+rating: ?
+source: manual
+notes: Needs review.

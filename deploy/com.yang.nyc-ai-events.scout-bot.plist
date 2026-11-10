@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- deploy/com.yang.nyc-ai-events.scout-bot.plist
+     Long-running Discord-bot service for /today, /week, /scout link,
+     and /scout retract slash commands (spec §3).
+
+     Install:
+       1. Generate an install copy that replaces RUNTIME_PATH.
+       2. cp the generated copy to ~/Library/LaunchAgents/
+       3. launchctl load -w ~/Library/LaunchAgents/com.yang.nyc-ai-events.scout-bot.plist
+     Inspect:
+       launchctl list | grep scout-bot
+     Logs:
+       tail -f RUNTIME_PATH/data/logs/scout-bot.out.log RUNTIME_PATH/data/logs/scout-bot.err.log
+     Kill without unloading:
+       Set the Marker.BOT_DISABLED file: touch RUNTIME_PATH/data/.bot_disabled
+       The bot exits cleanly on next launchd restart, then sits idle.
+       Clear with: rm RUNTIME_PATH/data/.bot_disabled
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.yang.nyc-ai-events.scout-bot</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-c</string>
+    <string>set -a &amp;&amp; source RUNTIME_PATH/.env.friends-alpha &amp;&amp; export PYTHONSAFEPATH=1 &amp;&amp; set +a &amp;&amp; cd RUNTIME_PATH &amp;&amp; RUNTIME_PATH/.venv/bin/nyc-ai-scout bot</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>LLM_SCORING_MODE</key>
+    <string>codex-cli</string>
+    <key>CODEX_CLI_PATH</key>
+    <string>/usr/local/bin/codex</string>
+    <key>CODEX_MODEL</key>
+    <string>gpt-5.6-luna</string>
+    <key>CODEX_REASONING_EFFORT</key>
+    <string>low</string>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+
+  <!-- KeepAlive=true: launchd restarts the bot on crash. Long-running
+       service; no schedule. The bot honors Marker.BOT_DISABLED at startup
+       so Yang can kill it without unloading the launchd job. -->
+  <key>KeepAlive</key>
+  <true/>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>RUNTIME_PATH/data/logs/scout-bot.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>RUNTIME_PATH/data/logs/scout-bot.err.log</string>
+
+  <!-- Throttle: avoid tight crash-restart loops if the bot blows up
+       on startup (e.g., bad DISCORD_BOT_TOKEN). 30s minimum between
+       restarts; launchd's default is 10s which is too aggressive. -->
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+</dict>
+</plist>

@@ -1,0 +1,39 @@
+<div class="actions">
+  {% if not can_personalize %}
+    <a class="action-link action-open" href="{{ event.safe_url }}" target="_blank" rel="noopener">{{ event.primary_action_label }}</a>
+  {% elif event.primary_action_kind in ["register", "apply"] %}
+    <form class="primary-action-form" method="post" action="/events/{{ event.id }}/action">
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="return_to" value="{{ current_return_to }}">
+      <button class="action-open" type="submit">{{ event.primary_action_label }}</button>
+    </form>
+  {% else %}
+    <a class="action-link action-open" href="{{ event.safe_url }}" target="_blank" rel="noopener">{{ event.primary_action_label }}</a>
+  {% endif %}
+
+  {% if can_personalize %}
+    <details class="status-menu">
+      <summary>{{ event.status_label }}</summary>
+      <div class="status-menu-panel">
+        {% for status, label in statuses %}
+          <form method="post" action="/events/{{ event.id }}/status">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="return_to" value="{{ current_return_to }}">
+            <input type="hidden" name="status" value="{{ status }}">
+            <button type="submit">{{ label }}</button>
+          </form>
+        {% endfor %}
+        <div class="feedback-actions">
+          {% for rating, label in [(1, "+"), (-1, "-")] %}
+            <form method="post" action="/events/{{ event.id }}/rating">
+              <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+              <input type="hidden" name="return_to" value="{{ current_return_to }}">
+              <input type="hidden" name="rating" value="{{ rating }}">
+              <button type="submit">{{ label }}</button>
+            </form>
+          {% endfor %}
+        </div>
+      </div>
+    </details>
+  {% endif %}
+</div>

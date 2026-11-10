@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.yang.nyc-ai-events-web</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>-lc</string>
+    <string>set -a &amp;&amp; source RUNTIME_PATH/.env.friends-alpha &amp;&amp; export NYC_AI_EVENTS_FRIEND_MODE=1 &amp;&amp; export PYTHONSAFEPATH=1 &amp;&amp; set +a &amp;&amp; cd RUNTIME_PATH &amp;&amp; RUNTIME_PATH/.venv/bin/nyc-ai-scout migrate &amp;&amp; exec RUNTIME_PATH/.venv/bin/nyc-ai-scout serve --host 127.0.0.1 --port 8847</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+
+  <key>StandardOutPath</key>
+  <string>RUNTIME_PATH/data/web.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>RUNTIME_PATH/data/web.err.log</string>
+</dict>
+</plist>

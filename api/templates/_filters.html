@@ -1,0 +1,28 @@
+<form class="filters" method="get" action="{{ view_path }}">
+  <div class="field">
+    <label for="min_score">Score</label>
+    <input id="min_score" name="min_score" type="number" min="0" max="1" step="0.05" value="{{ '%.2f'|format(filters.min_score) }}">
+  </div>
+  {% if can_personalize %}
+    <div class="field">
+      <label for="status">Status</label>
+      <select id="status" name="status">
+        <option value="" {% if not filters.status %}selected{% endif %}>default</option>
+        <option value="all" {% if filters.status == "all" %}selected{% endif %}>all</option>
+        {% for status, label in statuses %}
+          <option value="{{ status }}" {% if filters.status == status %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  {% endif %}
+  <div class="field">
+    <label for="source">Source</label>
+    <select id="source" name="source">
+      <option value="" {% if not filters.source %}selected{% endif %}>all</option>
+      {% for source in sources %}
+        <option value="{{ source }}" {% if filters.source == source %}selected{% endif %}>{{ source }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit">Filter</button>
+</form>

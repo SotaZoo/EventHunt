@@ -1,0 +1,32 @@
+{% extends "account_base.html" %}
+{% block title %}Sign in — Event Hunt{% endblock %}
+{% block content %}
+  <section class="login-content">
+    <h1>Event Hunt</h1>
+    <p class="supporting">
+      Sign in with your {% if not open_google_signup %}invited {% endif %}Google account.
+    </p>
+    {% if error %}
+      <p class="notice" role="alert">{{ error }}</p>
+    {% endif %}
+    {% if supabase_oauth_enabled %}
+      <a class="primary-button" href="{{ supabase_start_url }}">Log in with Google</a>
+    {% elif google_oauth_enabled %}
+      <a class="primary-button" href="/auth/google/start">Log in with Google</a>
+    {% else %}
+      <p class="supporting">Google sign-in is not available yet.</p>
+    {% endif %}
+    {% if invite_login_enabled %}
+      <details class="fallback-login">
+        <summary>Local invite code</summary>
+        <form method="post" action="/login">
+          <div class="field">
+            <label for="invite_code">Invite code</label>
+            <input id="invite_code" name="invite_code" type="password" autocomplete="one-time-code">
+          </div>
+          <button class="primary-button" type="submit">Log in</button>
+        </form>
+      </details>
+    {% endif %}
+  </section>
+{% endblock %}

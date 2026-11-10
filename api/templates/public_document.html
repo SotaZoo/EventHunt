@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>{{ document|title }} — Event Hunt</title>
+  <link rel="stylesheet" href="{{ asset_urls['main.css'] }}">
+</head>
+<body class="public-body">
+<main class="public-entry">
+  <header class="public-header"><a href="/events">Back to Event Hunt</a></header>
+  <article class="public-document">
+    <h1>{{ document|title }}</h1>
+    {% if document != 'about' %}<p>{% if policy_effective_date %}Effective date: {{ policy_effective_date }}{% else %}Draft — not yet published{% endif %}</p>{% endif %}
+    {% if document == 'about' %}
+    <p>Event Hunt helps you discover events worth your time. We bring listings from multiple sources into one place, with clear details and ranked recommendations.</p>
+    <p>Browse on the web or explore events with your AI assistant. When you're ready to attend, register on the event's original site.</p>
+    <p>Built by SotaZoo. Questions or feedback? <a href="mailto:info@sotazoo.com?subject=Event%20Hunt%20enquiry">info@sotazoo.com</a>.</p>
+    {% elif document == 'privacy' %}
+    <p>Event Hunt is a SotaZoo service. This notice explains how we handle information when you visit Event Hunt, request an invitation or use your account.</p>
+    <h2>Information we handle</h2>
+    <p>When you request an invitation, we store your email address, request and approval records, and invitation-mail status. When you sign in through Google and Supabase, we process your account identifier, email and session information to authenticate you. We also handle the account settings and support messages you provide. Our hosting and authentication providers process technical connection and security logs. The invitation endpoint uses a keyed network-source identifier to limit abuse.</p>
+    <h2>How we use it</h2>
+    <p>We use this information to review access requests, manage accounts, send invitation and service messages, answer support requests and protect the service. Requesting an invitation does not subscribe you to marketing emails.</p>
+    <h2>Providers and AI integrations</h2>
+    <p>We use Render for hosting, Supabase for account and database services, Google for sign-in, and Brevo for invitation email. These providers process the information needed for their roles. If you authorize an AI client, it can receive the information covered by your consent, including your email and event recommendations. You can remove its authorization in AI integration. The AI provider handles information under its own policies. Event Hunt does not access your inbox or calendar as part of this service.</p>
+    <h2>Cookies and storage</h2>
+    <p>We use session cookies and browser storage for sign-in, security and interface settings. Source event links open third-party sites with their own policies.</p>
+    <h2>Retention and your choices</h2>
+    <p>We keep access-request, account and delivery records to manage access to the service. To ask about your information, correct it or request deletion, contact info@sotazoo.com. We may need to verify your identity. Some records may need to remain for security or legal reasons; provider logs and backups can follow separate retention schedules. This notice does not promise automatic expiry or immediate deletion.</p>
+    <h2>Security and changes</h2>
+    <p>We use access controls and encrypted connections to protect information, but no service can guarantee complete security. We update this notice when our practices change and show the current effective date. Contact info@sotazoo.com with Event Hunt privacy questions.</p>
+    {% else %}
+    <p>These terms govern your use of Event Hunt, a SotaZoo service. By using the service, you agree to these terms. If you do not agree, do not use it.</p>
+    <h2>Access</h2>
+    <p>Event Hunt is an early-access service. Sign in with your Google account, provide accurate information and protect your account access. We may limit or revoke access to protect the service or address misuse.</p>
+    <h2>Event information</h2>
+    <p>We collect and organize information from external sources. Listings, rankings and availability may be incomplete, outdated or incorrect. Check the original listing for current details, admission requirements and registration. Event organizers and registration platforms manage their events; Event Hunt does not sell tickets, confirm registration or guarantee admission.</p>
+    <h2>AI clients</h2>
+    <p>You may use an authorized AI client within the permissions you grant. You remain responsible for the instructions and permissions you give it. You can remove its Event Hunt authorization in AI integration. External AI services and event sites have their own terms.</p>
+    <h2>Acceptable use and content</h2>
+    <p>Do not bypass access controls, misuse another person's account, overload the service or use it unlawfully. Respect the rights of event organizers and other content owners. Showing an event listing does not transfer its ownership or grant rights beyond those its owner permits.</p>
+    <h2>Availability</h2>
+    <p>Early-access features can change or become unavailable. We provide the service as available and do not guarantee uninterrupted access, complete coverage, recommendation accuracy or a particular outcome. These terms do not exclude rights that applicable law does not allow us to exclude.</p>
+    <h2>Privacy, updates and contact</h2>
+    <p>Our <a href="/privacy">Privacy Policy</a> explains how we handle personal information. We may revise these terms and will show the current effective date. Questions about Event Hunt: info@sotazoo.com.</p>
+    {% endif %}
+  </article>
+  {% include "public_footer.html" %}
+</main>
+</body>
+</html>
