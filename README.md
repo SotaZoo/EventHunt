@@ -11,20 +11,9 @@ See what stands out, spot waitlists, and go straight to the organizer.
 
 </div>
 
-## Screenshots
+## Screenshot
 
-<table>
-<tr>
-<td width="50%">
-<p align="center"><strong>Desktop</strong></p>
-<img src="doc/assets/discovery-desktop.png" alt="Desktop calendar and event agenda with sample listings" />
-</td>
-<td width="50%">
-<p align="center"><strong>Mobile</strong></p>
-<img src="doc/assets/discovery-mobile.png" alt="Mobile calendar and event cards with sample listings" />
-</td>
-</tr>
-</table>
+![Event Hunt desktop calendar and event agenda with sample listings](doc/assets/discovery-desktop.png)
 
 ## Agent workflow
 
